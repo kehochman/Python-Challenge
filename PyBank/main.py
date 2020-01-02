@@ -2,6 +2,7 @@ import os
 import csv
 
 budget = r'C:\Users\kehoc\Documents\GWU-ARL-DATA-PT-12-2019-U-C\02-Homework\03-Python\Instructions\PyBank\Resources\budget_data.csv'
+budget_analysis = os.path.join("Analysis", "budget_analysis.txt")
 
 # open and read csv
 with open(budget, newline="") as csvfile:
@@ -32,9 +33,9 @@ with open(budget, newline="") as csvfile:
     total_months = len(months)
 
     # greatest increase in revenue
-    great_increase = max(rev_change)
+    greatest_increase = max(rev_change)
     # greatest decrease in revenue
-    great_decrease = min(revenue_change)
+    greatest_decrease = min(rev_change)
 
 
     # print the Results
@@ -46,16 +47,16 @@ with open(budget, newline="") as csvfile:
 
     print("Total: " + "$" + str(sum(P)))
 
-    print("Average change: " + "$" + str(revenue_average))
+    print("Average change: " + "$" + str(rev_average))
 
-    print("Greatest Increase in Profits: " + str(months[revenue_change.index(max(revenue_change))+1]) + " " + "$" + str(greatest_increase))
+    print("Greatest Increase in Profits: " + str(months[rev_change.index(max(rev_change))+1]) + " " + "$" + str(greatest_increase))
 
-    print("Greatest Decrease in Profits: " + str(months[revenue_change.index(min(revenue_change))+1]) + " " + "$" + str(greatest_decrease))
+    print("Greatest Decrease in Profits: " + str(months[rev_change.index(min(rev_change))+1]) + " " + "$" + str(greatest_decrease))
 
 
     # output to a text file
 
-    file = open("output.txt","w")
+    file = open("Analysis/output.txt","w")
 
     file.write("Financial Analysis" + "\n")
 
@@ -65,11 +66,11 @@ with open(budget, newline="") as csvfile:
 
     file.write("Total: " + "$" + str(sum(P)) + "\n")
 
-    file.write("Average Change: " + "$" + str(revenue_average) + "\n")
+    file.write("Average Change: " + "$" + str(rev_average) + "\n")
 
-    file.write("Greatest Increase in Profits: " + str(months[revenue_change.index(max(revenue_change))+1]) + " " + "$" + str(greatest_increase) + "\n")
+    file.write("Greatest Increase in Profits: " + str(months[rev_change.index(max(rev_change))+1]) + " " + "$" + str(greatest_increase) + "\n")
 
-    file.write("Greatest Decrease in Profits: " + str(months[revenue_change.index(min(revenue_change))+1]) + " " + "$" + str(greatest_decrease) + "\n")
+    file.write("Greatest Decrease in Profits: " + str(months[rev_change.index(min(rev_change))+1]) + " " + "$" + str(greatest_decrease) + "\n")
 
     file.close()
 
