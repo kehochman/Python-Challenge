@@ -12,62 +12,72 @@ csvpath = r'C:\Users\kehoc\Documents\GWU-ARL-DATA-PT-12-2019-U-C\02-Homework\03-
 #open the file
 with open(csvpath,newline="") as csvfile:
     csvreader = csv.DictReader(csvfile)
-
+    
     #go line by line and process each vote
     for line in csvreader:
-
+        
         #add to total number of votes
         num_votes = num_votes + 1
-
+        
         #candidate voted for
-        candidate = line[2]
-
-        #if candidate has other votes then add to vote tally
-        if candidate in candidate_option:
-            candidate_index = candidate_option.index(candidate)
-            vote_counts[candidate_index] = vote_counts[candidate_index] + 1
-        #else create new spot in list for candidate
-        else:
+        candidate = line["Candidate"]
+        if candidate not in candidate_option:
             candidate_option.append(candidate)
-            vote_counts.append(1)
-
-percentages = []
-max_votes = vote_counts[0]
-max_index = 0
-#find percentage of vote for each candidate and the winner
-for count in range(len(candidate_option)):
-    vote_percentage = vote_counts[count]/num_votes*100
-    percentages.append(vote_percentage)
-    if vote_counts[count] > max_votes:
-        max_votes = vote_counts[count]
-        print(max_votes)
-        max_index = count
-winner = candidate_option[max_index]
+            candidates_votes[candidate]=0
+        candidates_votes[candidate]+=1
+        
+        #if candidate has other votes then add to vote tally
+        # if candidate in candidate_option:
+            # candidate_index = candidate_option.index(candidate)
+            # candidates_votes[candidate_index] = candidates_votes[candidate_index] + 1
+        #else create new spot in list for candidate
+        # else:
+        #     candidate_option.append(candidate)
+        #     candidates_votes.append(1)
 
 #print results
-print("Election Results")
-print("--------------------------")
-print(f"Total Votes: {num_votes}")
-for count in range(len(candidate_option)):
-    print(f"{candidate_option[count]}: {percentages[count]}% ({vote_counts[count]})")
-print("---------------------------")
-print(f"Winner: {winner}")
-print("---------------------------")
+output=(
+    f"\nElection Results\n"
+    f"--------------------------\n"
+    f"Total Votes: {num_votes}\n"
+    f"--------------------------\n"
+)
+percentages = []
+max_votes = 0
 
-write_file = f"pypoll_results_summary.txt"
+# max_index = 0
+#find percentage of vote for each candidate and the winner
+# for count in range(len(candidate_option)):
 
-#open write file
+for candidate in candidates_votes:
+   
+    # vote_percentage = candidates_votes[candidate]/num_votes*100
+    # percentages.append(vote_percentage)
+    
+    if candidates_votes[candidate] > max_votes:
+        max_votes = candidates_votes[candidate]
+        
+        # print(max_votes)
+        # max_index = candidate
+        winner = candidate
+    output+=f"{candidate}: {candidates_votes[candidate]/num_votes*100:.3f}% ({candidates_votes[candidate]})\n"
+output+=f"---------------------------\nWinner: {winner}\n---------------------------"
+print(output)
+write_file = "pypoll_results_summary.txt"
+
+# #open write file
 filewriter = open(write_file, mode = 'w')
 
-#print analysis to file
-filewriter.write("Election Results\n")
-filewriter.write("--------------------------\n")
-filewriter.write(f"Total Votes: {num_votes}\n")
-for count in range(len(candidate_option)):
-    filewriter.write(f"{candidate_option[count]}: {percentages[count]}% ({vote_counts[count]})\n")
-filewriter.write("---------------------------\n")
-filewriter.write(f"Winner: {winner}\n")
-filewriter.write("---------------------------\n")
+# #print analysis to file
+filewriter.write(output)
 
-#close file
-filewriter.close()
+# filewriter.write("Election Results\n")
+# filewriter.write("--------------------------\n")
+# filewriter.write(f"Total Votes: {num_votes}\n")
+# for count in range(len(candidate_option)):
+#     filewriter.write(f"{candidate_option[count]}: {percentages[count]}% ({candidates_votes[count]})\n")
+# filewriter.write("---------------------------\n")
+# filewriter.write(f"Winner: {winner}\n")
+# filewriter.write("---------------------------\n")
+# #close file
+# filewriter.close()
